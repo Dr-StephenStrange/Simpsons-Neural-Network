@@ -3,12 +3,10 @@ import numpy as np
 import cv2
 import gradio as gr
 from tensorflow.keras.models import load_model
-
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"  # Suppress all INFO and WARNING logs
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # Disable GPU
+import tensorflow
 
 # Configuration
-MODEL_PATH = "model.keras"
+MODEL_PATH = "model_dir"
 TEST_DATA_DIR = "Dataset/testset"
 IMAGE_SIZE = 64
 

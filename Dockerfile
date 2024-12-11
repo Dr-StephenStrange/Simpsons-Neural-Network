@@ -10,6 +10,10 @@ RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
+# Set environment variables to force TensorFlow to use CPU and suppress logs
+ENV CUDA_VISIBLE_DEVICES="-1"
+ENV TF_CPP_MIN_LOG_LEVEL="2"
+
 # Copy the requirements file to the container
 COPY requirements.txt .
 

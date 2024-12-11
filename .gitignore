@@ -5,3 +5,4 @@ Dataset/*
 *venv
 Paper.docx
 convert_ipynb*
+*model_dir/
