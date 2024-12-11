@@ -1,2 +1,7 @@
 Dataset/*
 *.tmp
+*.idea/
+*checkpoints/
+*venv
+Paper.docx
+convert_ipynb*

@@ -1,0 +1,6 @@
+# Ignore everything except the necessary files
+*
+!gradio_app.py
+!requirements.txt
+!Dataset/
+!model.keras
