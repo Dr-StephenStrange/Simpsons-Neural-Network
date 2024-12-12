@@ -5,6 +5,11 @@ import gradio as gr
 from tensorflow.keras.models import load_model
 import tensorflow
 
+
+# Render deployment
+RENDER = True
+port = int(os.environ.get("PORT", 7860))
+
 # Configuration
 MODEL_PATH = "model_dir"
 TEST_DATA_DIR = "Dataset/testset"
@@ -173,4 +178,7 @@ with gr.Blocks() as demo:
         outputs=[output_pred, output_conf, output_correctness]
     )
 
-demo.launch()
+if RENDER:
+    demo.launch(server_name="0.0.0.0", server_port=port)
+else:
+    demo.launch()
