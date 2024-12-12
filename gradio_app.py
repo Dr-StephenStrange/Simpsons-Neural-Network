@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 import gradio as gr
 from tensorflow.keras.models import load_model
-import tensorflow
+import tensorflow as tf
 
 
 # Render deployment
@@ -91,10 +91,12 @@ def predict_image(source_type, selected_image, uploaded_image):
         input_img = preprocess_image(img)
         input_img = np.expand_dims(input_img, axis=0)
 
-        predictions = model.predict(input_img)
-        pred_label = np.argmax(predictions[0])
+        # Use the "serving_default" signature for predictions
+        predictions = model.signatures["serving_default"](tf.convert_to_tensor(input_img))
+        pred_probs = predictions["output_0"]  # Use the correct output key
+        pred_label = np.argmax(pred_probs.numpy()[0])
         pred_name = CHARACTER_LABELS_MAP[pred_label]
-        confidence = predictions[0][pred_label] * 100
+        confidence = pred_probs.numpy()[0][pred_label] * 100
 
         # Ground truth parsing
         gt_label = parse_ground_truth_from_filename(selected_image)
@@ -119,16 +121,19 @@ def predict_image(source_type, selected_image, uploaded_image):
         input_img = preprocess_image(img)
         input_img = np.expand_dims(input_img, axis=0)
 
-        predictions = model.predict(input_img)
-        pred_label = np.argmax(predictions[0])
+        # Use the "serving_default" signature for predictions
+        predictions = model.signatures["serving_default"](tf.convert_to_tensor(input_img))
+        pred_probs = predictions["output_0"]  # Use the correct output key
+        pred_label = np.argmax(pred_probs.numpy()[0])
         pred_name = CHARACTER_LABELS_MAP[pred_label]
-        confidence = predictions[0][pred_label] * 100
+        confidence = pred_probs.numpy()[0][pred_label] * 100
 
-        # No ground truth for uploaded images
         return f"Predicted: {pred_name}", f"Confidence: {confidence:.2f}%", ""
 
     else:
         return "Invalid source type", "", ""
+
+
 
 
 # Build the gradio interface
